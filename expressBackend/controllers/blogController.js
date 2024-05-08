@@ -1,5 +1,7 @@
+const { default: mongoose } = require('mongoose');
 const Blog = require('../models/blogSchema')
-const {ObjectId} = require('mongodb')
+const {ObjectId} = require('mongodb');
+const { error } = require('console');
  
 
 const createBlog = async(req, res)=>{
@@ -65,7 +67,12 @@ const getSingleBlog = async(req, res)=>{
 
 }
 
-const upDateBlog = async(req, res)=>{
+const updateBlog = async(req, res)=>{
+    const {id} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error:"No such blog"})
+    }
     const {title, description, authorId, tags, body} = await req.body;
     console.log(req.body)
 
@@ -94,23 +101,46 @@ const upDateBlog = async(req, res)=>{
         return res.status(400).json({error:"All field must filleds.", emptyFields})
     }
 
-    try {
-        const blog = await Blog.create({title, description, body, tags, authorId
 
-        })
-        res.status(200).json(blog)
+    try {
+        const updatedblog = await Blog.findOneAndUpdate({_id:id},
+            {...req.body}
+        )
+
+        if(!updateBlog){
+            return res.status(400).json({error: "No such blog"})
+        }
+        res.status(200).json(updatedblog)
     } catch (error) {
         res.status(400).json({error:error.message})
         
     }
+}
 
 
+const deleteBlog = async(req, res)=>{
+    const {id} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error: "No such blog."})
+    }
+
+    try {
+        const deletedBlog = await Blog.findOneAndDelete({_id: id})
+        res.status(200).json("Blog deleted successfully.")
+    } catch (error) {
+        return res.status(404).json({error: error.message})
+        
+    }
 
 }
+
+
 
 module.exports = {
     createBlog,
     getAllBlogs,
     getSingleBlog,
-    upDateBlog
+    updateBlog,
+    deleteBlog
 } 

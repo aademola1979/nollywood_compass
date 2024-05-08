@@ -6,7 +6,7 @@ function App() {
 
   useEffect(()=>{
     async()=>{
-      const response = await axios.get('/')
+      const response = await axios.get('http://localhost:4000/blogs')
       setData(response.json())}
    
   },[])
