@@ -45,8 +45,15 @@ const createBlog = async(req, res)=>{
 }
 
 const getAllBlogs = async (req, res)=> {
+    const page = req.query.page || 0;
+    const booksPerpage = 20
+
     try {
         const blogs = await Blog.find({})
+        .sort({createdAt: -1})
+        .skip(page * booksPerpage)
+        .limit(booksPerpage)
+
         res.status(200).json(blogs) 
     } catch (error) {
         res.status(400).json({error:error.message})
@@ -57,8 +64,15 @@ const getAllBlogs = async (req, res)=> {
 
 const getSingleBlog = async(req, res)=>{
     const id = req.params.id
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error: "No such blog"})
+    }
+
     try {
         const blog = await Blog.findOne({_id:id})
+        if(!blog){
+            return res.status(404).json({error: "Blog not fund"})
+        }
         return res.status(200).json(blog)
     } catch (error) {
         return res.status(400).json({error:error.message})

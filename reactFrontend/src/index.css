@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.container-px{
+    @apply px-4 sm:px-12 md:px-24 lg:px-32
+}
+
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .test{
+    color: rgb(3, 7, 14);
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+
+  input, textarea{
+    outline: none;
+  }
+  
+  
+  input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    @apply -translate-y-2 text-[10px] leading-4 font-normal; 
+  }
+  
+  input:focus ~ label {
+    @apply left-0;
+  }
+
+  .layout{
+    grid-template-rows: auto 1fr auto;
+  }

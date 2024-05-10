@@ -5,8 +5,21 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens:{
+        xsmall:"320px",
+        small:"360px"
+
+      },
+      colors:{
+        dark: "#1b1b1b",
+        light: "#fff",
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    // eslint-disable-next-line no-undef
+    require('@tailwindcss/forms'),
+  ],
 }
 
