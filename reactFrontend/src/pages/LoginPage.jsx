@@ -1,6 +1,7 @@
 import { useState } from "react"
-import siteMetadata from "../lib/siteMetadata"
 import { useAuthContext } from "../hooks/useAuthContext"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 
 const LoginPage = () => {
@@ -24,7 +25,7 @@ const LoginPage = () => {
   const handleSubmit = async(e) =>{
     e.preventDefault()
     setIsSubmitting(true)
-    const response = await fetch(`${siteMetadata.BASE_URL}/signIn`, 
+    const response = await fetch(`${BASE_URL}/api/signin`, 
       {
         method: 'POST',
         body:JSON.stringify(user),

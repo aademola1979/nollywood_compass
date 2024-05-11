@@ -17,7 +17,7 @@ router.get('/blogs', getAllBlogs);
 router.get('/blog/:id', getSingleBlog)
 
 //Protecting routes
-router.use(requireAuth)
+//router.use(requireAuth)
 
 //POST a blog
 router.post("/blog", createBlog);

@@ -26,7 +26,7 @@ const SignUPage = () => {
   const handleSubmit = async(e) =>{
     e.preventDefault()
     setIsSubmitting(true)
-    const response = await fetch(`${siteMetadata.BASE_URL}/signUp`, 
+    const response = await fetch(`${siteMetadata.BASE_URL}/api/signup`, 
       {
         method: 'POST',
         body:JSON.stringify(user),

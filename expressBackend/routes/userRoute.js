@@ -5,10 +5,10 @@ const adminAuth = require('../middlware/adminAuth.js')
 const router = express.Router();
 
 //Sign Up route
-router.post("/signUp", signUp)
+router.post("/api/signup", signUp)
 
 //Sign In route
-router.post("/signIn", signIn)
+router.post("/api/signin", signIn)
 
 //Protecting routes
 //router.use(adminAuth)
