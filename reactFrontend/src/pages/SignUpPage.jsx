@@ -1,14 +1,21 @@
 import { useState } from "react"
 import siteMetadata from "../lib/siteMetadata"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 
 const SignUPage = () => {
   const [user, setUser] = useState(
     {
+      first_name:"",
+      last_name: "",
+      confirmPassword:"",
       password: "",
       email: ""
     }
   )
+
+  const {dispatch} = useAuthContext();
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [error, setError] = useState(null)
 
@@ -18,6 +25,7 @@ const SignUPage = () => {
 
   const handleSubmit = async(e) =>{
     e.preventDefault()
+    setIsSubmitting(true)
     const response = await fetch(`${siteMetadata.BASE_URL}/signUp`, 
       {
         method: 'POST',
@@ -30,10 +38,21 @@ const SignUPage = () => {
     const json = await response.json()
 
     if(!response.ok){
+      setIsSubmitting(false)
       setError(json.error)
 
-    }else{
-      setUser(
+    }
+    
+    
+    if(response.ok){
+
+         //Save response to localStorage
+         localStorage.setItem('user', JSON.stringify(json))
+            
+         //update state
+         dispatch({type: 'LOGIN', payload:json})
+      
+         setUser(
         {
           first_name:'',
           last_name:'',
@@ -42,6 +61,7 @@ const SignUPage = () => {
           confirmPassword:''
         }
       )
+      setIsSubmitting(false)
     }
   }
 
@@ -51,20 +71,19 @@ const SignUPage = () => {
   return (
     <div className="flex justify-center items-center !max-w-[100vw] min-w-[100vw] h-full">
       <div 
-        className='max-w-[500px] max-h-fit overflow-y-scroll no-scrollbar 
+        className='max-w-[500px] max-h-fit overflow-y-scroll no-scrollbar my-8
         lg:w-[500px] md:w-[450px] xlsmall:w-fit rounded-md shadow-md relative grid gap-2 px-4 
-        xlsmall:px-6 sm:px-8 md:px-12 lg:px-16 pt-12 pb-6 bg-light/70 text-dark'
+        xlsmall:px-6 sm:px-8 md:px-12 lg:px-16 pt-8 pb-6 bg-light/70 text-dark'
     >
         <div>
-            <h2 className='w-full text-green-600 font-semibold text-xl text-center mb-6'>Welcome!</h2>
+          <h1 className="font-semibold font-serif w-full text-center text-base md:text-xl mb-8">Nollywood compass</h1>
             <p className='text-dark/80 font-normal'>
                 Sign up to share your Nollywood experience.
             </p>
-
         </div>
-        <form className='grid gap-[1.2rem] w-full' onSubmit={handleSubmit}>
-            <div className='grid gap-[1rem] w-full'>
-              <div className="border-t pt-4 border-gray-300">
+        <form className='grid gap-[1rem] w-full' onSubmit={handleSubmit}>
+            <div className='grid gap-[0.5rem] w-full'>
+              <div className="border-t border-gray-300">
                 {
                   error 
                   && (
@@ -72,8 +91,7 @@ const SignUPage = () => {
                     {error}
                   </div>
                 )
-                  
-      
+
                 }
 
               </div>
@@ -141,8 +159,12 @@ const SignUPage = () => {
             </div>
             <button 
               type="submit"
-              className="bg-green-500 hover:bg-green-600 py-2 rounded-md text-light">
-              Submit
+              disabled={isSubmitting}
+              className={`bg-green-500 hover:bg-green-600 py-2 rounded-md text-light 
+              ${isSubmitting && "bg-green-300"}`}>
+             {
+              isSubmitting ? "Loading" : "Sign Up"
+             }
             </button>
 
         </form>

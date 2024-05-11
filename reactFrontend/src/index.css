@@ -38,3 +38,7 @@
   .layout{
     grid-template-rows: auto 1fr auto;
   }
+
+  .link{
+    @apply border-b-2 border-transparent hover:border-orange-400 p-1
+  }

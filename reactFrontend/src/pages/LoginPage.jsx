@@ -1,5 +1,6 @@
 import { useState } from "react"
 import siteMetadata from "../lib/siteMetadata"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 
 const LoginPage = () => {
@@ -11,6 +12,8 @@ const LoginPage = () => {
   )
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const {dispatch} = useAuthContext();
+ 
 
   const [error, setError] = useState(null)
 
@@ -30,22 +33,31 @@ const LoginPage = () => {
       }
     )
 
-    setIsSubmitting(false)
-
-
 
     const json = await response.json()
 
     if(!response.ok){
       setError(json.error)
+      setIsSubmitting(false)
+    }
+    
+    
+    if(response.ok){
 
-    }else{
+         //Save response to localStorage
+         localStorage.setItem('user', JSON.stringify(json))
+            
+         //update state
+         dispatch({type: 'LOGIN', payload:json})
+      //
       setUser(
         {
           email:'',
           password:''
         }
       )
+
+      setIsSubmitting(false)
     }
   }
 
@@ -60,6 +72,7 @@ const LoginPage = () => {
         xlsmall:px-6 sm:px-8 md:px-12 lg:px-16 pt-12 pb-6 bg-light/70 text-dark'
     >
         <div>
+        <h1 className="font-semibold font-serif w-full text-center text-base md:text-xl mb-8">Nollywood compass</h1>
             <h2 className='w-full text-green-600 font-semibold text-xl text-center mb-6'>Welcome back!</h2>
             <p className='text-dark/80 font-normal'>
                 Login to share your Nollywood experience.
@@ -112,7 +125,9 @@ const LoginPage = () => {
               type="submit"
               disabled={isSubmitting}
               className={`bg-green-500 hover:bg-green-600 py-2 rounded-md text-light ${isSubmitting && "bg-green-300"}`}>
-              Submit
+              {
+                isSubmitting ? "Loading" : "Sign In"
+              }
             </button>
 
         </form>
