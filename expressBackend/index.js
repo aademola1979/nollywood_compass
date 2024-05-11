@@ -4,45 +4,25 @@ const cors = require('cors');
 const user = require("./routes/userRoute.js");
 const blog = require("./routes/blogRoute.js");
 const mongoose = require('mongoose');
-const {connectToDb, getDB} = require('./db')
-const {getAllBlogs} = require('./controllers/blogController.js')
+const path = require('path')
 
 
-const PORT = process.env.PORT;
+
+
+const PORT = process.env.PORT || 3030;
 const app = express();
 app.use(cors());
 
-app.use(express.json());
+const buildPath = path.join(__dirname, 'build')
 
-/*let db;
-
-connectToDb((err)=>{
-    if(!err){
-        app.listen(PORT, ()=>{
-            console.log(`App listening on ${PORT}`)
-        })
-        db = getDB()
-    }
+//Get static files
+app.get('*', (req, res)=>{
+    res.sendFile(path.join(buildPath, 'index.html'))
 
 })
 
-app.get('/', async(req, res)=>{
-    const users = [];
-    try {
-         await db.collection('blogs').find()
-         .sort({createdAt: 1})
-         .limit(20)
-         .forEach((user)=>users.push(user))
-         .then(
-            ()=>{
-                return res.status(200).json(users)
-            }
-         )
-    } catch (error) {
-        return res.status(400).json(error)
-    }
+app.use(express.json());
 
-})*/
 
 app.use('/', user);
 app.use('/', blog)

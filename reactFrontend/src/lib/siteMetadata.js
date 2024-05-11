@@ -1,6 +1,5 @@
 const siteMetadata = {
-    BASE_URL:"https://demopanda.onrender.com"
-
+    BASE_URL:"http://localhost:4000"
 } 
 
 export default siteMetadata
