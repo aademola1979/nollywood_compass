@@ -1,7 +1,7 @@
 const { default: mongoose } = require('mongoose');
 const Blog = require('../models/blogSchema')
-const {ObjectId} = require('mongodb');
-const { error } = require('console');
+
+
  
 
 const createBlog = async(req, res)=>{
