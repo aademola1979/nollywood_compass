@@ -1,10 +1,6 @@
 {
- 
-    "name": "nollywood_compass",
-      "engines": {
-      "npm": "10.2.4",
-      "node": "21.5.0"
-      },
+  "proxy": "http://localhost:4000",
+  "name": "reactfrontend",
   "private": true,
   "version": "0.0.1",
   "type": "module",
