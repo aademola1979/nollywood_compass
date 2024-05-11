@@ -1,5 +1,5 @@
 const siteMetadata = {
-    BASE_URL:"http://localhost:4000"
+    BASE_URL:"https://demopanda.onrender.com"
 
 } 
 
